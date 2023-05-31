@@ -1,38 +1,39 @@
 #include <stdio.h>
 
-int linearSearch(int arr[], int size, int target) {
-    for (int i = 0; i < size; i++) {
-        if (arr[i] == target) {
-            return 1; // Aranan eleman dizide bulundu
-        }
+int binarySearch(int dizi[], int sol, int sag, int aranan) {
+    if (sag >= sol) {
+        int orta = sol + (sag - sol) / 2;
+        
+        // Aranan deðer ortada mý?
+        if (dizi[orta] == aranan)
+            return orta;
+        
+        // Aranan deðer sol yarýda mý?
+        if (dizi[orta] > aranan)
+            return binarySearch(dizi, sol, orta - 1, aranan);
+        
+        // Aranan deðer sað yarýda mý?
+        return binarySearch(dizi, orta + 1, sag, aranan);
     }
-    return 0; // Aranan eleman dizide bulunamadý
+    
+    // Aranan deðer bulunamadý
+    return -1;
 }
 
 int main() {
-    // a) Dizinin boyutunu ve elemanlarýný kullanýcýdan isteyiniz.
-    int size;
-    printf("Dizinin boyutunu girin: ");
-    scanf("%d", &size);
-
-    int arr[size];
-    for (int i = 0; i < size; i++) {
-        printf("Dizinin %d. elemanýný girin: ", i+1);
-        scanf("%d", &arr[i]);
-    }
-
-    // b) Dizide aranacak olan elemaný kullanýcýdan isteyiniz.
+    int dizi[] = {4, 8, 3, 84, 47, 76, 9, 24, 68};
+    int boyut = sizeof(dizi) / sizeof(dizi[0]);
     int aranan;
-    printf("Aranacak elemaný girin: ");
+    
+    printf("Aranacak degeri giriniz: ");
     scanf("%d", &aranan);
-
-    // c) Aranýlan elemanýn dizide olup olmadýðýnýn kontrolünü Linear Search kullanarak yapýnýz.
-    if (linearSearch(arr, size, aranan)) {
-        printf("Aranan eleman dizide bulunuyor.\n");
-    } else {
-        printf("Aranan eleman dizide bulunmuyor.\n");
-    }
-
+    
+    int sonuc = binarySearch(dizi, 0, boyut - 1, aranan);
+    
+    if (sonuc == -1)
+        printf("Aranan deger bulunamadi.\n");
+    else
+        printf("Aranan deger %d. indekste bulundu.\n", sonuc);
+    
     return 0;
 }
-
